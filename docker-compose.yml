@@ -1,0 +1,51 @@
+version: '3.7'
+services:
+  app:
+    build:
+      context: ./docker/app
+      dockerfile: Dockerfile
+    image: mtroesken/handicraft:latest
+    networks:
+     - appnet
+    volumes:
+     - .:/var/www/html
+    ports:
+     - 8080:80
+    working_dir: /var/www/html
+  cache:
+    image: redis:alpine
+    networks:
+     - appnet
+    volumes:
+     - cachedata:/data
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: handicraft
+      POSTGRES_USER: root
+    ports:
+    - "5432:5432"
+    networks:
+     - appnet
+    volumes:
+     - dbdata:/var/lib/postgresql
+  node:
+    build:
+      context: ./docker/node
+      dockerfile: Dockerfile
+    image: ratepay/node:latest
+    networks:
+     - appnet
+    volumes:
+     - .:/opt
+    working_dir: /opt
+    command: echo hi
+networks:
+  appnet:
+    driver: bridge
+volumes:
+  dbdata:
+    driver: local
+  cachedata:
+    driver: local
