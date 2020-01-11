@@ -1,18 +1,10 @@
 <?php
 
-use Illuminate\Http\Request;
+// ToDo: Add auth
+Route::get('/customers', 'CustomerController@index');
+Route::post('/customers', 'CustomerController@store');
+Route::patch('/customers/{id}', 'CustomerController@update');
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('/projects', 'ProjectsController@index');
+Route::post('/projects', 'ProjectsController@store');
+Route::patch('/projects/{id}', 'ProjectsController@update');
